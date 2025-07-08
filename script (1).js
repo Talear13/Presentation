@@ -1,18 +1,17 @@
-// Grab elements
+// Get elements
 const homeScreen     = document.getElementById('home-screen');
 const terminalScreen = document.getElementById('terminal-screen');
 const terminalOutput = document.getElementById('terminal-output');
 const logo           = document.getElementById('logo');
 
 const cursorSymbol = '_';
-
-// Simple slide content for science presentation
 const slides = [
-  "Welcome to our science presentation.\n>> Press any key to continue.",
-  "Topic: The Cell\nThe cell is the basic structural and functional unit of life.",
-  "Two Types of Cells:\n- Prokaryotic\n- Eukaryotic",
-  "Cell Organelles:\n- Nucleus\n- Mitochondria\n- Ribosomes\n- ER\n- Golgi Apparatus",
-  "Thank you for watching!\n>> Questions?"
+  "Welcome to our science presentation.\nTopic: The Cell\n\n>> Press any key to begin.",
+  "What is a Cell?\n- A cell is the basic unit of life.\n- All living things are made of cells.\n\n>>",
+  "Types of Cells:\n- Prokaryotic (no nucleus)\n- Eukaryotic (has nucleus)\n\n>>",
+  "Cell Organelles:\n- Nucleus: control center\n- Mitochondria: energy maker\n- Ribosomes: protein builders\n- ER and Golgi: transport & process materials\n\n>>",
+  "Fun Fact:\nYour body has around 37.2 trillion cells.\n\n>>",
+  "Thank you!\nQuestions?\n\n>> Press any key to exit."
 ];
 
 let currentSlide = 0;
@@ -32,7 +31,7 @@ function removeCursor() {
   const ex = terminalOutput.querySelector('.cursor');
   if (ex) ex.remove();
 }
-async function typeText(txt, speed = 50) {
+async function typeText(txt, speed = 35) {
   removeCursor();
   terminalOutput.textContent = '';
   for (let ch of txt) {
@@ -45,17 +44,18 @@ async function typeText(txt, speed = 50) {
 
 // Slide logic
 function handleSlideAdvance() {
-  window.addEventListener('keydown', async function next(e) {
+  window.addEventListener('keydown', async function next() {
     currentSlide++;
     if (currentSlide < slides.length) {
       await typeText(slides[currentSlide]);
     } else {
       window.removeEventListener('keydown', next);
+      await typeText(">> End of presentation.");
     }
   });
 }
 
-// Terminal start
+// Start presentation
 async function startTerminal() {
   homeScreen.classList.add('hidden');
   terminalScreen.classList.remove('hidden');
@@ -63,5 +63,4 @@ async function startTerminal() {
   handleSlideAdvance();
 }
 
-// Init
 logo.addEventListener('click', startTerminal);
